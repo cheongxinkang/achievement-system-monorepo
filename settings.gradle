@@ -1,0 +1,5 @@
+rootProject.name = 'achievement-monorepo'
+
+include 'apps:eureka-server'
+include 'apps:api-gateway'
+include 'apps:config-server'
