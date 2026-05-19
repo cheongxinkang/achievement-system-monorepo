@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Select a Template</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="app-container">
+    <h2>Available Templates</h2>
+    <p>Select a template to create a new achievement.</p>
+    
+    <!-- Button to open the modal -->
+    <button id="openModalBtn" class="btn" style="border: none; cursor: pointer; font-size: 16px;">Create New Template</button>
+
+    <div class="table-container">
+        <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="template : ${templates}">
+            <td th:text="${template.templateName}">Template Name</td>
+            <td th:text="${template.type}">Type</td>
+            <td>
+                <a th:href="@{/create(templateId=${template.id})}" class="action-link">Use Template</a>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(templates)}">
+            <td colspan="3" style="text-align: center;">No templates found. Create one in the Template Service!</td>
+        </tr>
+        </tbody>
+        </table>
+    </div>
+    
+    <a th:href="@{/}" class="back-link">&larr; Back to List</a>
+</div>
+
+<!-- The Modal -->
+<div id="templateModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 style="margin-top: 0;">Create New Template</h2>
+        <iframe src="http://localhost:8081" width="100%" height="600px" style="border:none; border-radius: 4px;"></iframe>
+    </div>
+</div>
+
+<script>
+    var modal = document.getElementById("templateModal");
+    var btn = document.getElementById("openModalBtn");
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>

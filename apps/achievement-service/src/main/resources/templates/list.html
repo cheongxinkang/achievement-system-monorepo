@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Achievements List</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="app-container">
+    <h2>Achievements</h2>
+    <a th:href="@{/templates}" class="btn">Create New Achievement</a>
+
+    <div class="achievements-grid">
+        <div class="achievement-card" th:each="achievement : ${achievements}"
+             th:classappend="${achievement.completed} ? 'completed-card' : 'pending-card'"
+             th:onclick="'openAchievementModal(this)'"
+             th:data-id="${achievement.id}"
+             th:data-name="${achievement.achievementName}"
+             th:data-deadline="${achievement.deadline != null ? achievement.deadline : '-'}"
+             th:data-completed="${achievement.completed}"
+             th:data-edit-url="@{/edit/{id}(id=${achievement.id})}"
+             th:data-complete-url="@{/complete/{id}(id=${achievement.id})}">
+            
+            <div class="achievement-icon">
+                <span th:if="${achievement.completed}">🏆</span>
+                <span th:unless="${achievement.completed}">🔒</span>
+            </div>
+            <div class="achievement-info">
+                <h3 th:text="${achievement.achievementName}">Name</h3>
+                <p class="achievement-status" th:text="${achievement.completed} ? 'Unlocked' : 'Locked'"></p>
+            </div>
+            
+            <div class="hidden-data" style="display: none;">
+                <div class="data-desc">
+                    <div th:each="line : ${achievement.description.split('\n')}" style="margin-bottom: 4px;">
+                        <span th:if="${line.contains(':')}">
+                            <strong th:text="${#strings.substringBefore(line, ':')} + ':'"></strong>
+                            <span th:text="${#strings.substringAfter(line, ':')}"></span>
+                        </span>
+                        <span th:unless="${line.contains(':')}" th:text="${line}"></span>
+                    </div>
+                </div>
+                <div class="data-criteria">
+                    <ul style="margin: 0; padding-left: 20px;" th:if="${!#lists.isEmpty(achievement.listOfCriteria)}">
+                        <li th:each="criterion : ${achievement.listOfCriteria}" th:text="${criterion}"></li>
+                    </ul>
+                    <span th:if="${#lists.isEmpty(achievement.listOfCriteria)}">-</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="empty-state" th:if="${#lists.isEmpty(achievements)}">
+            No achievements found. Create one!
+        </div>
+    </div>
+</div>
+
+    <!-- Achievement Details Modal -->
+    <div id="achievementDetailModal" class="modal">
+        <div class="modal-content achievement-modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeAchievementModal()">&times;</span>
+                <div class="modal-icon-large" id="modalIcon">🏆</div>
+                <h2 id="modalName">Achievement Name</h2>
+                <div id="modalStatusBadge" class="status-badge">Unlocked</div>
+            </div>
+            <div class="modal-body">
+                <div class="info-section">
+                    <h4>Description</h4>
+                    <div id="modalDescription">...</div>
+                </div>
+                <div class="info-section">
+                    <h4>Deadline</h4>
+                    <p id="modalDeadline">...</p>
+                </div>
+                <div class="info-section">
+                    <h4>Criteria</h4>
+                    <div id="modalCriteria"></div>
+                </div>
+            </div>
+            <div class="modal-footer" id="modalActions">
+                <!-- Buttons injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openAchievementModal(cardElement) {
+            const id = cardElement.getAttribute('data-id');
+            const name = cardElement.getAttribute('data-name');
+            const deadline = cardElement.getAttribute('data-deadline');
+            const completed = cardElement.getAttribute('data-completed') === 'true';
+            const editUrl = cardElement.getAttribute('data-edit-url');
+            const completeUrl = cardElement.getAttribute('data-complete-url');
+            
+            const hiddenData = cardElement.querySelector('.hidden-data');
+            const descHtml = hiddenData.querySelector('.data-desc').innerHTML;
+            const criteriaHtml = hiddenData.querySelector('.data-criteria').innerHTML;
+            
+            document.getElementById('modalName').textContent = name;
+            document.getElementById('modalIcon').textContent = completed ? '🏆' : '🔒';
+            
+            const statusBadge = document.getElementById('modalStatusBadge');
+            statusBadge.textContent = completed ? 'Unlocked' : 'Locked';
+            statusBadge.className = 'status-badge ' + (completed ? 'status-unlocked' : 'status-locked');
+            
+            document.getElementById('modalDescription').innerHTML = descHtml;
+            document.getElementById('modalDeadline').textContent = deadline;
+            document.getElementById('modalCriteria').innerHTML = criteriaHtml;
+            
+            const actionsDiv = document.getElementById('modalActions');
+            actionsDiv.innerHTML = '';
+            
+            const editBtn = document.createElement('a');
+            editBtn.href = editUrl;
+            editBtn.className = 'btn btn-secondary';
+            editBtn.textContent = 'Edit';
+            actionsDiv.appendChild(editBtn);
+            
+            if (!completed) {
+                const form = document.createElement('form');
+                form.action = completeUrl;
+                form.method = 'post';
+                form.className = 'action-form';
+                
+                const completeBtn = document.createElement('button');
+                completeBtn.type = 'submit';
+                completeBtn.className = 'btn btn-success';
+                completeBtn.textContent = 'Mark Complete';
+                
+                form.appendChild(completeBtn);
+                actionsDiv.appendChild(form);
+            }
+            
+            document.getElementById('achievementDetailModal').style.display = 'block';
+        }
+
+        function closeAchievementModal() {
+            document.getElementById('achievementDetailModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('achievementDetailModal');
+            // Check if clicking outside content, but modal handles it since target is the overlay
+            if (event.target == modal) {
+                closeAchievementModal();
+            }
+        }
+    </script>
+</body>
+</html>

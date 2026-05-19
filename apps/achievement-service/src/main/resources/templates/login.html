@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Achievement System</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <style>
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error-color);
+            color: var(--error-color);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container app-container-small">
+    <h2>Welcome Back</h2>
+    <p style="text-align: center; color: var(--text-muted); margin-bottom: 2.5rem;">Please enter your credentials to continue.</p>
+
+    <div th:if="${error}" class="error-message" th:text="${error}"></div>
+    <div th:if="${param.registered}" class="error-message" style="background: rgba(16, 185, 129, 0.1); border-color: var(--success-color); color: var(--success-color);">
+        Registration successful! Please sign in.
+    </div>
+
+    <form th:action="@{/authenticate}" method="post" class="login-box">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required autocomplete="username" />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password" />
+        </div>
+        <div style="margin-top: 2rem;">
+            <button type="submit" style="width: 100%;">Sign In</button>
+        </div>
+    </form>
+    
+    <div style="margin-top: 2rem; text-align: center;">
+        <span style="color: var(--text-muted); font-size: 0.9rem;">Need an account? </span>
+        <a th:href="@{/register}" style="color: var(--primary-color); text-decoration: none; font-size: 0.9rem; font-weight: 600;">Sign up</a>
+    </div>
+</div>
+</body>
+</html>

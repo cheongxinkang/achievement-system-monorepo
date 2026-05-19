@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Achievement</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="app-container app-container-small">
+    <h2>Edit Achievement</h2>
+    
+    <form th:action="@{/update/{id}(id=${achievement.id})}" th:object="${achievement}" method="post">
+        <div class="form-group">
+            <label for="achievementName">Name</label>
+            <input type="text" id="achievementName" th:field="*{achievementName}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="deadline">Deadline</label>
+            <input type="date" id="deadline" th:field="*{deadline}">
+        </div>
+
+        <div class="form-group">
+            <label for="criteriaString">Criteria (comma-separated)</label>
+            <input type="text" id="criteriaString" name="criteriaString" th:value="${criteriaString}">
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" th:field="*{description}" rows="4" required></textarea>
+        </div>
+        
+        <button type="submit" class="btn-warning">Update Achievement</button>
+    </form>
+    
+    <a th:href="@{/}" class="back-link">&larr; Back to List</a>
+</div>
+</body>
+</html>

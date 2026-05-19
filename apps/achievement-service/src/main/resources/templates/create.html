@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Achievement</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="app-container app-container-small">
+    <h2 th:text="'Create: ' + ${template.templateName}">Create Achievement</h2>
+    <p>Fill out the fields defined by this template.</p>
+    
+    <form th:action="@{/save}" method="post">
+        <!-- Hidden field to carry over the template name to map it to Achievement name -->
+        <input type="hidden" name="_templateName" th:value="${template.templateName}" />
+        
+        <div th:each="field : ${template.fields}" class="form-group">
+            <label th:for="${field.variableName}" th:text="${field.prompt}">Prompt</label>
+            
+            <th:block th:switch="${field.type}">
+                <textarea th:case="'TEXT'" th:id="${field.variableName}" th:name="${field.variableName}" rows="4" required></textarea>
+                
+                <input th:case="'NUMBER'" type="number" th:id="${field.variableName}" th:name="${field.variableName}" required />
+                
+                <input th:case="'BOOLEAN'" type="checkbox" th:id="${field.variableName}" th:name="${field.variableName}" value="true" />
+                
+                <input th:case="'DATETIME'" type="datetime-local" th:id="${field.variableName}" th:name="${field.variableName}" required />
+                
+                <input th:case="*" type="text" th:id="${field.variableName}" th:name="${field.variableName}" required />
+            </th:block>
+        </div>
+        
+        <button type="submit" class="btn-success">Save Achievement</button>
+    </form>
+    
+    <a th:href="@{/templates}" class="back-link">&larr; Back to Templates</a>
+</div>
+</body>
+</html>
