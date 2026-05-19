@@ -1,17 +1,15 @@
-package com.xk.config_server;
+package com.xk.user;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.config.server.EnableConfigServer;
 
 @SpringBootApplication
-@EnableConfigServer
 @EnableDiscoveryClient
-public class ConfigServerApplication {
+public class UserApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ConfigServerApplication.class, args);
+		SpringApplication.run(UserApplication.class, args);
 	}
 
 }
