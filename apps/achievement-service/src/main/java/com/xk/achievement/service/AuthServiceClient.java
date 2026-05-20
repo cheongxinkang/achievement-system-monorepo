@@ -3,6 +3,7 @@ package com.xk.achievement.service;
 import com.xk.achievement.dto.TokenRequest;
 import com.xk.achievement.dto.TokenResponse;
 import com.xk.achievement.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -24,8 +25,8 @@ public class AuthServiceClient {
     @Value("${client.secret}")
     private String clientSecret;
 
-    public AuthServiceClient() {
-        this.restTemplate = new RestTemplate();
+    public AuthServiceClient(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     public TokenResponse authenticate(String username, String password) {

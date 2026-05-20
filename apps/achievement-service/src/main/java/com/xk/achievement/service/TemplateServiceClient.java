@@ -1,6 +1,7 @@
 package com.xk.achievement.service;
 
 import com.xk.achievement.dto.TemplateDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +14,12 @@ import java.util.UUID;
 @Service
 public class TemplateServiceClient {
 
-    private final RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
     private final String TEMPLATE_SERVICE_URL = "http://localhost:8081/api/templates";
 
     public TemplateServiceClient() {
-        this.restTemplate = new RestTemplate();
+
     }
 
     public List<TemplateDTO> getAllTemplates() {
