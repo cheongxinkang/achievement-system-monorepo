@@ -10,6 +10,8 @@ services:
     image: config-server
     environment:
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - GIT_USER=${GIT_USER}
+      - GIT_KEY=${GIT_KEY}
     command:
       ["./wait-for-it.sh", "eureka:8761", "--", "java", "-jar","/app.jar"]
     depends_on:
