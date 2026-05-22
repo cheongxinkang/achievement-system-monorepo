@@ -3,6 +3,10 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 }
 
+bootJar {
+    enabled = true
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }

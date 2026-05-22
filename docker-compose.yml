@@ -4,29 +4,16 @@ services:
     image: eureka-server
     ports:
       - 8761:8761
-    expose:
-      - 8761
-    networks:
-      - mynetwork
-
 
   config-server:
     build: ./apps/config-server
     image: config-server
     environment:
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
-    depends_on:
-      - eureka-server
-    ports:
-      - 8888:8888
-    expose:
-      - 8888
-    links:
-      - eureka-server
     command:
       ["./wait-for-it.sh", "eureka:8761", "--", "java", "-jar","/app.jar"]
-    networks:
-      - mynetwork
+    depends_on:
+      - eureka-server
 
 
   user-service:
@@ -34,7 +21,6 @@ services:
     image: user-service
     environment:
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      - SPRING_CONFIG_IMPORT="configserver:"
     depends_on:
       - eureka-server
       - config-server
@@ -58,12 +44,3 @@ services:
     depends_on:
       - eureka-server
       - config-server
-    links:
-      - eureka-server
-      - config-server
-    networks:
-      - mynetwork
-
-networks:
-  mynetwork:
-    driver: bridge

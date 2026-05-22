@@ -5,6 +5,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 
+bootJar {
+    enabled = true
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
