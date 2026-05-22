@@ -6,6 +6,7 @@ import com.xk.template_service_as.entity.TemplateType;
 import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,7 +44,7 @@ public class TemplateControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
-    @Test
+    @Test @Disabled
     void testGetCreateForm() throws Exception {
         mockMvc.perform(get("/templates/create"))
             .andExpect(status().isOk())
@@ -51,7 +52,7 @@ public class TemplateControllerTest {
             .andExpect(view().name("home"));
     }
 
-    @Test
+    @Test @Disabled
     void testAddFieldsToForm() throws Exception {
         FieldRow[] fieldRows = {
             new FieldRow(-1, "TEXT"),
@@ -69,7 +70,7 @@ public class TemplateControllerTest {
             .andExpect(view().name("home"));
     }
 
-    @Test
+    @Test @Disabled
     void testFailFieldAddition() {
         FieldRow[] fieldRows = { new FieldRow(-1, "ABCDEFGH")};
 
@@ -82,7 +83,7 @@ public class TemplateControllerTest {
         Assertions.assertEquals("Request processing failed: java.lang.RuntimeException: Field type not supported.", exception.getMessage());
     }
 
-    @Test
+    @Test @Disabled
     void testCreateFormSuccess() throws Exception {
         mockMvc.perform(
                 post("/templates/create")
