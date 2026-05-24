@@ -55,7 +55,7 @@ services:
     environment:
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
     ports:
-      - 8080:8080
+      - 80:8080
     depends_on:
       config-server:
         condition: service_healthy
